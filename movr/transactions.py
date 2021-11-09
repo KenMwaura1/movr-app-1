@@ -23,7 +23,7 @@ def start_ride_txn(session, vehicle_id):
     # SELECT * FROM vehicles WHERE id = <vehicle_id> AND in_use = false
     #         LIMIT 1;
     vehicle = session.query(Vehicle).filter(Vehicle.id == vehicle_id). \
-                                     filter(Vehicle.in_use == False).first()
+        filter(Vehicle.in_use == False).first()
 
     if vehicle is None:
         return None
@@ -56,8 +56,8 @@ def end_ride_txn(session, vehicle_id, new_longitude, new_latitude,
     # find the row
     # SELECT * FROM vehicles WHERE id = <vehicle_id> AND in_use = true;
     vehicle = session.query(Vehicle). \
-                      filter(Vehicle.id == vehicle_id). \
-                      filter(Vehicle.in_use == True).first()
+        filter(Vehicle.id == vehicle_id). \
+        filter(Vehicle.in_use == True).first()
 
     if vehicle is None:
         return False
@@ -100,13 +100,16 @@ def add_vehicle_txn(session, vehicle_type, longitude, latitude, battery):
                       vehicle_type=vehicle_type,
                       battery=battery)
 
-    # TO COMPLETE THE "ADD VEHICLES" LAB, WRITE THE COMMAND TO INSERT THE NEW
-    # ROW HERE.
-    # YOU WILL NEED TO USE THE `session` OBJECT.
-    # YOU MAY FIND THIS LINK IN THE SQLALCHEMY DOCS USEFUL:
-    # https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.Session.add
+    try:
+        session.add(new_row)  # Add new row to database
+        session.commit()  # Commit changes to database
+        return str(vehicle_id)  # Return the new id.
+    except Exception as e:
+        print(e)
+        session.rollback()  # Rollback changes to database
+        return f'error: {e}'
 
-    return str(vehicle_id)  # Return the new id.
+
 
 
 def remove_vehicle_txn(session, vehicle_id):
@@ -124,16 +127,20 @@ def remove_vehicle_txn(session, vehicle_id):
     # find the row.
     # SELECT * FROM vehicles WHERE id = <vehicle_id> AND in_use = false;
     vehicle = session.query(Vehicle).filter(Vehicle.id == vehicle_id). \
-                                     filter(Vehicle.in_use == False).first()
+        filter(Vehicle.in_use == False).first()
 
     if vehicle is None:  # Either vehicle is in use or it's been deleted
         return None
 
-    # if Vehicle has been found. Delete it.
-    session.delete(vehicle)
-    return True  # Should return True when vehicle is deleted.
-
-
+    try:
+        # if Vehicle has been found. Delete it.
+        session.delete(vehicle)
+        session.commit()
+        return True  # Should return True when vehicle is deleted.
+    except Exception as e:
+        print(e)
+        session.rollback()  # Rollback changes to database
+        return f'error: {e}'
 
 
 def get_vehicles_txn(session, max_records):
