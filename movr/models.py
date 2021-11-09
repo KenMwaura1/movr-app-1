@@ -19,7 +19,7 @@ class Vehicle(Base):
         Base {DeclarativeMeta} -- Base class for model to inherit.
     """
     __tablename__ = 'vehicles'
-    id = Column(UUID)
+    id = Column(UUID(as_uuid=True), server_default=func.uuid_generate_v4(), )
     last_longitude = Column(Float)
     last_latitude = Column(Float)
     last_checkin = Column(DateTime, default=func.now)
