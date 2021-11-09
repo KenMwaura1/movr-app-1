@@ -6,9 +6,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.dialects import registry
 from sqlalchemy.orm import sessionmaker
 
-from movr.transactions import (add_vehicle_txn, end_ride_txn, get_vehicle_txn,
-                               get_vehicles_txn, remove_vehicle_txn,
-                               start_ride_txn)
+from .transactions import (add_vehicle_txn, end_ride_txn, get_vehicle_txn,
+                           get_vehicles_txn, remove_vehicle_txn,
+                           start_ride_txn)
 
 registry.register("cockroachdb", "cockroachdb.sqlalchemy.dialect",
                   "CockroachDBDialect")
@@ -18,6 +18,7 @@ class MovR:
     """
     Wraps the database connection. The class methods wrap transactions.
     """
+
     def __init__(self, conn_string, max_records=20):
         """
         Establish a connection to the database, creating an Engine instance.
