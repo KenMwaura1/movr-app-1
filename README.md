@@ -18,7 +18,7 @@ The application stack consists of the following components:
 
 ### Database and Environment Setup
 
-You'll need to connect to a [CockroachCloud](https://cockroachlabs.cloud/) cluster.
+You'll need to connect to a [CockroachCloud](https://cockroachlabs.cloud/) cluster or locally running [CockroachDB cluster](https://www.cockroachlabs.com/docs/stable/start-a-local-cluster.html)
 
 1. Configure environment variables
      
@@ -41,8 +41,14 @@ You'll need to connect to a [CockroachCloud](https://cockroachlabs.cloud/) clust
     ~~~ shell
     $ ./server.py run
     ~~~
+2. To add environment variables, use the following command in the shell:
 
-1. Navigate to the url provided (defaults to [http://localhost:36257](http://localhost:36257)) to use the application.
+    ~~~ shell
+    $ cp .env.example .env
+    ~~~
+   Modify the .env file to include your CockroachCloud/ localhost install connection string.
+
+3. Navigate to the url provided (defaults to [http://localhost:36257](http://localhost:36257)) to use the application.
 
 ### Clean up
 
