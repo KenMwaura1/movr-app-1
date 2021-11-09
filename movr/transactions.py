@@ -6,9 +6,11 @@ This is where the python code meets the database.
 
 from uuid import uuid4
 
+from sqlalchemy.orm import aliased
 from sqlalchemy.sql.expression import func
 
-from .models import Vehicle
+
+from .models import Vehicle, LocationHistory
 
 
 def start_ride_txn(session, vehicle_id):
@@ -184,6 +186,10 @@ def get_vehicle_txn(session, vehicle_id):
     # Find the row
     # SELECT * FROM vehicles WHERE id = <vehicle_id>;
     vehicle = session.query(Vehicle).filter(Vehicle.id == vehicle_id).first()
+
+    v = aliased(Vehicle)
+    l = aliased(LocationHistory)
+
 
     # Return the row as a dictionary for flask to populate a page.
     if vehicle is None:
