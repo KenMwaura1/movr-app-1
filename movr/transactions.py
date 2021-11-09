@@ -91,6 +91,7 @@ def add_vehicle_txn(session, vehicle_type, longitude, latitude, battery):
         vehicle_id {UUID} -- The vehicle's new UUID
     """
     vehicle_id = uuid4()  # Generate new uuid
+    print(str(vehicle_id))
     current_time = func.now()  # Current time on database
     new_row = Vehicle(id=str(vehicle_id),
                       last_longitude=longitude,
@@ -102,7 +103,7 @@ def add_vehicle_txn(session, vehicle_type, longitude, latitude, battery):
 
     try:
         session.add(new_row)  # Add new row to database
-        session.commit()  # Commit changes to database
+        # session.commit()  # Commit changes to database
         return str(vehicle_id)  # Return the new id.
     except Exception as e:
         print(e)
@@ -135,7 +136,7 @@ def remove_vehicle_txn(session, vehicle_id):
     try:
         # if Vehicle has been found. Delete it.
         session.delete(vehicle)
-        session.commit()
+        # session.commit()
         return True  # Should return True when vehicle is deleted.
     except Exception as e:
         print(e)
