@@ -297,7 +297,7 @@ def get_password():
 
 def get_certs_dir():
     """
-    Propmts user for directory of .crt file
+    Prompts user for directory of .crt file
 
     Note that both absolute and relative paths are allowed.
     """

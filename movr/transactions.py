@@ -129,15 +129,11 @@ def remove_vehicle_txn(session, vehicle_id):
     if vehicle is None:  # Either vehicle is in use or it's been deleted
         return None
 
-    # Vehicle has been found. Delete it.
-
-    # TO COMPLETE THE "REMOVE VEHICLES" LAB, WRITE THE COMMAND 
-    # TO DELETE THE CORRECT VEHICLE HERE.
-    # YOU WILL NEED TO USE THE 'session' OBJECT.
-    # YOU MAY FIND THIS LINK IN THE SQLALCHEMY DOCS USEFUL:
-    # https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.Session.delete
-
+    # if Vehicle has been found. Delete it.
+    session.delete(vehicle)
     return True  # Should return True when vehicle is deleted.
+
+
 
 
 def get_vehicles_txn(session, max_records):
